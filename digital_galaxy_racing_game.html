@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تحدي السرعة - المجرة الرقمية</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&display=swap');
+*{box-sizing:border-box}body{margin:0;font-family:Cairo,Tahoma,sans-serif;color:#fff;background:#090d2d;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 15% 20%,#442080 0,transparent 32%),radial-gradient(circle at 85% 15%,#075b89 0,transparent 30%),linear-gradient(145deg,#090d2d,#17104a 60%,#071d42)}
+button,input{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:1050px;margin:auto;padding:14px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.logo{font-weight:900;font-size:clamp(20px,4vw,32px);text-shadow:0 0 18px #20dfff}.topbtn{border:1px solid #ffffff40;background:#ffffff12;color:white;border-radius:14px;padding:8px 12px}
+.panel{margin-top:16px;border:1px solid #6ceaff55;background:linear-gradient(145deg,#1b286bd9,#10143feF);border-radius:25px;padding:clamp(15px,3vw,27px);box-shadow:0 12px 35px #0008, inset 0 0 25px #6b6bff12}
+.center{text-align:center}.hidden{display:none!important}.tag{display:inline-block;background:#ffdf58;color:#27144b;padding:5px 15px;border-radius:30px;font-weight:900}
+h1{font-size:clamp(28px,5vw,48px);line-height:1.35;margin:8px 0;text-shadow:0 0 18px #00cfff88}h2{margin:8px 0}.muted{color:#d5eaff;line-height:1.9}
+.heroArt{font-size:clamp(65px,12vw,112px);filter:drop-shadow(0 0 20px #00d9ff);animation:float 2s ease-in-out infinite}
+.primary{background:linear-gradient(135deg,#ffe75b,#ff9d39);color:#29134c;font-weight:900;border-radius:16px;padding:13px 24px;box-shadow:0 5px 0 #b65a2d,0 0 20px #ffc94a55}
+.primary:active{transform:translateY(4px);box-shadow:0 1px 0 #b65a2d}
+input{padding:13px;border:2px solid #55dcff;border-radius:13px;background:#f5fcff;color:#15234b;min-width:0;width:min(100%,340px)}
+.row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}
+.choices{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:15px 0}
+.pick{background:#ffffff12;border:2px solid #ffffff30;border-radius:18px;padding:12px 18px;min-width:110px;color:white;font-size:17px;font-weight:800}
+.pick.selected{border-color:#ffe45b;background:#ffe45b22;box-shadow:0 0 20px #ffe45b55}
+.pick span{display:block;font-size:43px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.hud div{background:#ffffff13;border:1px solid #ffffff24;border-radius:13px;text-align:center;padding:8px;font-weight:800}
+.track{height:235px;border:2px solid #4ee9ff88;border-radius:20px;overflow:hidden;position:relative;background:linear-gradient(#16144c 0%,#30206c 45%,#e84e9c 46%,#572b84 58%,#202947 59%);box-shadow:inset 0 0 35px #0008}
+.starsbg{position:absolute;inset:0;background-image:radial-gradient(#fff 1px,transparent 1.5px),radial-gradient(#80f5ff 1px,transparent 1.5px);background-size:53px 47px,81px 63px;background-position:0 0,20px 10px;animation:stars 5s linear infinite}
+.planet{position:absolute;top:12px;left:8%;font-size:46px;filter:drop-shadow(0 0 12px #ff72d2)}
+.gate{position:absolute;right:7%;top:25px;font-size:68px;filter:drop-shadow(0 0 12px #ffd64b)}
+.trackroad{position:absolute;bottom:0;left:-10%;width:120%;height:85px;background:linear-gradient(90deg,#222b48,#39415e,#222b48);transform:perspective(160px) rotateX(12deg);border-top:5px solid #9ffaff}
+.trackroad:after{content:"";position:absolute;left:0;right:0;top:36px;border-top:6px dashed #ffe45b;animation:road .5s linear infinite}
+.racer{position:absolute;bottom:42px;left:8%;font-size:65px;z-index:3;filter:drop-shadow(0 0 12px #ffcf50);transition:left .5s}
+.boost{position:absolute;bottom:35px;left:4%;font-size:45px;opacity:0;z-index:2}.boost.on{opacity:1;animation:flame .3s infinite alternate}
+.boss{position:absolute;right:27%;bottom:45px;font-size:54px;animation:bob 1.2s infinite}
+.track.flash{animation:flash .25s 3}
+.progress{height:12px;background:#ffffff20;border-radius:20px;overflow:hidden;margin:12px 0}.progress span{height:100%;display:block;width:0;background:linear-gradient(90deg,#4cf4ff,#ffe45b,#ff70c5);transition:width .4s}
+.question{font-size:clamp(20px,3vw,27px);font-weight:900;line-height:1.7;margin:12px 0}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.answer{background:linear-gradient(135deg,#f7fdff,#d7f4ff);color:#17224c;border:3px solid transparent;border-radius:15px;padding:13px;text-align:right;font-weight:900;font-size:16px;min-height:58px;transition:.15s}
+.answer:hover{transform:scale(1.02);border-color:#ffe45b}.answer.good{background:#baffdf;border-color:#24e69c}.answer.bad{background:#ffd1e1;border-color:#ff5898}
+.feedback{min-height:40px;font-weight:900;font-size:18px;margin:12px 0;color:#ffe879}
+.actionrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+.boostbtn{background:linear-gradient(135deg,#ff7c38,#ff3d91);color:white;border-radius:15px;padding:12px 17px;font-weight:900;box-shadow:0 4px 0 #a32867}
+.small{font-size:13px;color:#c7e7ff}.rewardIcon{font-size:86px;animation:pop .7s infinite alternate}
+.badgegrid{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px}.badgeitem{background:#ffffff14;border:1px solid #ffe45b88;border-radius:15px;padding:10px 14px}
+#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}.piece{position:absolute;top:-20px;font-size:22px;animation:fall 2.2s linear forwards}
+@keyframes float{50%{transform:translateY(-12px) rotate(-4deg)}}@keyframes road{to{transform:translateX(-100px)}}@keyframes stars{to{background-position:0 100px,20px 110px}}@keyframes flame{to{transform:scale(1.2);filter:brightness(1.6)}}@keyframes bob{50%{transform:translateY(-10px) rotate(5deg)}}@keyframes flash{50%{filter:brightness(2)}}@keyframes pop{to{transform:scale(1.12) rotate(5deg)}}@keyframes fall{to{transform:translateY(110vh) rotate(700deg);opacity:0}}
+@media(max-width:600px){.wrap{padding:10px}.hud{grid-template-columns:repeat(2,1fr)}.track{height:200px}.answers{grid-template-columns:1fr}.racer{font-size:55px}.boss{font-size:44px}}
+</style></head>
+<body><div id="confetti"></div><div class="wrap">
+<header><div class="logo">🌌 المجرة الرقمية</div><button class="topbtn" id="soundBtn">🔊 الصوت: تشغيل</button></header>
+
+<section id="welcome" class="panel center">
+ <div class="heroArt">🏎️⚡</div><div class="tag">لعبة مغامرات وتحديات</div>
+ <h1>تحدي السرعة: أنقذ المجرة!</h1>
+ <p class="muted">الروبوت زيزو سرق شفرات المجرة! اختَر عربيتك، اجمع الطاقة، اهزم التحديات، وافتح كأس المبرمج الصغير. مستعد يا بطل؟</p>
+ <div class="row"><input id="name" maxlength="22" placeholder="اكتب اسم البطل هنا"></div>
+ <h2>اختار عربية السباق 🚘</h2>
+ <div class="choices" id="carChoices">
+  <button class="pick selected" data-car="🏎️"><span>🏎️</span>النارية</button>
+  <button class="pick" data-car="🚙"><span>🚙</span>الصاروخ</button>
+  <button class="pick" data-car="🚓"><span>🚓</span>البرق</button>
+  <button class="pick" data-car="🛸"><span>🛸</span>الفضائية</button>
+ </div>
+ <button class="primary" id="start">ابدأ المغامرة 🚦</button>
+ <p class="small">4 عوالم • 16 سؤالًا • نجوم وجواهر • تحدي الروبوت</p>
+</section>
+
+<section id="play" class="hidden">
+ <div class="track" id="track"><div class="starsbg"></div><div class="planet">🪐</div><div class="gate">🌀</div><div class="boss" id="boss">🤖</div><div class="boost" id="flame">🔥</div><div class="racer" id="racer">🏎️</div><div class="trackroad"></div></div>
+ <div class="hud">
+  <div>👑 <span id="player">البطل</span></div><div>⭐ <span id="stars">0</span></div><div>💎 <span id="gems">0</span></div><div>⚡ <span id="energy">0</span></div>
+ </div>
+ <div class="panel">
+  <div class="row" style="justify-content:space-between"><span class="tag" id="world">العالم الأول</span><span class="small" id="qnum">السؤال 1 من 16</span></div>
+  <div class="progress"><span id="bar"></span></div>
+  <div class="question" id="q"></div>
+  <div class="answers" id="answers"></div>
+  <div class="feedback" id="feedback" aria-live="polite"></div>
+  <div class="actionrow"><button id="next" class="primary hidden">يلا على التحدي التالي ➜</button><button id="nitro" class="boostbtn">⚡ استخدم دفعة الطاقة</button></div>
+  <p class="small center">كل إجابة صحيحة تمنحك نجمة وجوهرة! والدفعة تزيد سرعة السيارة 🚀</p>
+ </div>
+</section>
+
+<section id="reward" class="panel center hidden">
+ <div class="rewardIcon" id="rewardIcon">🌟</div><div class="tag">تم فتح عالم جديد!</div><h1 id="rewardTitle">أنت بطل!</h1><p class="muted" id="rewardText"></p>
+ <div class="badgegrid"><div class="badgeitem">⭐ النجوم: <b id="rStars">0</b></div><div class="badgeitem">💎 الجواهر: <b id="rGems">0</b></div><div class="badgeitem">🏎️ عربيتك أصبحت أسرع!</div></div>
+ <button class="primary" id="continue">افتح البوابة التالية 🚀</button>
+</section>
+
+<section id="finish" class="panel center hidden">
+ <div class="rewardIcon">🏆👑</div><div class="tag">أسطورة المجرة الرقمية</div><h1 id="finalTitle">فزت يا بطل!</h1><p class="muted" id="finalText"></p>
+ <div class="badgegrid"><div class="badgeitem">⭐ <b id="fStars"></b> نجمة</div><div class="badgeitem">💎 <b id="fGems"></b> جوهرة</div><div class="badgeitem">🎖️ كأس المبرمج الصغير</div></div>
+ <button class="primary" id="again">العب من جديد 🔄</button>
+</section>
+<p class="small center">صُنعت لتكون البرمجة مغامرة ممتعة 💙</p>
+</div>
+<script>
+const worlds=[
+ {name:"🌍 عالم التفكير الذكي",emoji:"🌍",boss:"🤖",qs:[
+ ["ما المقصود بالبرمجة؟",["إعطاء الكمبيوتر تعليمات","تلوين الحائط","اللعب بالكرة"],0],
+ ["ماذا يفعل الكمبيوتر عندما نعطيه تعليمات صحيحة؟",["ينفذها","يذهب للنوم","يتحول إلى سيارة"],0],
+ ["الشخص الذي يكتب البرامج يسمى…",["مبرمجًا","رسامًا","طباخًا"],0],
+ ["قبل كتابة البرنامج، من المفيد أن…",["نفكر ونرتب الخطوات","نضغط عشوائيًا","نغلق الكمبيوتر"],0]]},
+ {name:"🛣️ عالم HTML",emoji:"🛣️",boss:"👾",qs:[
+ ["ما وظيفة HTML؟",["بناء محتوى صفحات الويب","إصلاح السيارة","تشغيل المروحة"],0],
+ ["ما العلامتان اللتان تحيطان باسم الوسم؟",["< >","( )","{ }"],0],
+ ["ماذا نسمي الكلمات مثل html وp داخل العلامات؟",["وسوم Tags","أصوات","مجلدات"],0],
+ ["أي سطر يعرّف المتصفح أن الملف HTML5؟",["<!DOCTYPE html>","<hello>","<start>"],0]]},
+ {name:"🧠 عالم HEAD و TITLE",emoji:"🧠",boss:"👹",qs:[
+ ["ما وظيفة HEAD؟",["معلومات وإعدادات الصفحة","الصور الظاهرة فقط","كتابة الفقرات"],0],
+ ["أين نضع وسم TITLE؟",["داخل HEAD","داخل الطريق","داخل الفقرة"],0],
+ ["ماذا يحدد TITLE؟",["اسم الصفحة في لسان المتصفح","لون خلفية الكمبيوتر","حجم الصورة"],0],
+ ["أي ترتيب صحيح؟",["HEAD ثم TITLE بداخله","TITLE خارج HTML","BODY داخل TITLE"],0]]},
+ {name:"🏁 عالم BODY",emoji:"🏁",boss:"🤖",qs:[
+ ["ما وظيفة BODY؟",["المحتوى الظاهر للزائر","اسم الموقع فقط","إعدادات الطباعة"],0],
+ ["أي وسم يمثل أكبر عنوان؟",["<h1>","<h6>","<p>"],0],
+ ["أي وسم نستخدمه لكتابة فقرة؟",["<p>","<title>","<head>"],0],
+ ["أي عبارة صحيحة؟",["h1 أكبر من h6","h6 أكبر من h1","p عنوان أكبر"],0]]}
+];
+let wi=0,qi=0,stars=0,gems=0,energy=0,score=0,name="البطل",car="🏎️",soundOn=true,locked=false,boostUsed=false;
+const $=id=>document.getElementById(id);
+function tone(freq,dur=.13,type="sine"){if(!soundOn)return;try{let c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=freq;o.connect(g);g.connect(c.destination);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.13,c.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);o.start();o.stop(c.currentTime+dur);setTimeout(()=>c.close(),500)}catch(e){}}
+function fanfare(){[523,659,784,1047].forEach((n,i)=>setTimeout(()=>tone(n,.22),i*130));}
+function confetti(){const box=$("confetti");box.innerHTML="";for(let i=0;i<42;i++){let p=document.createElement("span");p.className="piece";p.textContent=["✨","⭐","💎","🎉","🏁"][i%5];p.style.left=Math.random()*100+"%";p.style.animationDelay=Math.random()*.8+"s";box.appendChild(p)}setTimeout(()=>box.innerHTML="",3300)}
+function show(id){["welcome","play","reward","finish"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+$("carChoices").addEventListener("click",e=>{let b=e.target.closest("button[data-car]");if(!b)return;car=b.dataset.car;document.querySelectorAll(".pick").forEach(x=>x.classList.toggle("selected",x===b))});
+$("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"🔊 الصوت: تشغيل":"🔇 الصوت: إيقاف";if(soundOn)tone(700)};
+$("start").onclick=()=>{name=$("name").value.trim()||"البطل";wi=qi=stars=gems=energy=score=0;boostUsed=false;$("player").textContent=name;$("racer").textContent=car;show("play");render();fanfare()};
+function render(){locked=false;boostUsed=false;let w=worlds[wi],q=w.qs[qi],done=wi*4+qi;$("world").textContent=w.name;$("boss").textContent=w.boss;$("qnum").textContent=`التحدي ${done+1} من 16`;$("q").textContent=q[0];$("bar").style.width=(done/16*100)+"%";$("feedback").textContent="";$("next").classList.add("hidden");$("nitro").disabled=false;$("nitro").style.opacity=1;$("answers").innerHTML="";q[1].forEach((a,i)=>{let b=document.createElement("button");b.className="answer";b.textContent=["🚩 ","🔹 ","🔸 "][i]+a;b.onclick=()=>answer(i,b);$("answers").appendChild(b)});hud()}
+function hud(){$("stars").textContent=stars;$("gems").textContent=gems;$("energy").textContent=energy}
+function answer(i,btn){if(locked)return;locked=true;let q=worlds[wi].qs[qi],bs=[...$("answers").children];bs.forEach((b,j)=>{b.disabled=true;if(j===q[2])b.classList.add("good")});if(i===q[2]){stars++;gems++;energy++;score++;tone(880);setTimeout(()=>tone(1100),100);$("feedback").textContent=["🔥 إجابة أسطورية!","⚡ سرعة خارقة!","💎 جوهرة جديدة!"][score%3]+" يا "+name;$("racer").style.left=Math.min(77,8+score*4.2)+"%";$("flame").classList.add("on");$("track").classList.add("flash");setTimeout(()=>$("track").classList.remove("flash"),700)}else{btn.classList.add("bad");tone(190,.22,"triangle");$("feedback").textContent="قريب جدًا! شوف الإجابة الخضراء واتعلم منها 💙"}hud();$("next").classList.remove("hidden");$("next").textContent=qi===3?(wi===3?"واجه الزعيم الأخير 🏆":"افتح العالم التالي 🌌"):"التحدي التالي ➜"}
+$("nitro").onclick=()=>{if(energy<1){$("feedback").textContent="اجمع نجمة صحيحة أولًا لتحصل على طاقة ⚡";tone(230);return}if(boostUsed)return;boostUsed=true;energy--;hud();$("flame").classList.add("on");$("racer").style.left=Math.min(84,parseFloat($("racer").style.left||"8")+10)+"%";$("feedback").textContent="نيتروووو! انطلقت بسرعة الصاروخ 🚀";$("nitro").disabled=true;$("nitro").style.opacity=.45;fanfare()};
+$("next").onclick=()=>{qi++;if(qi===4){if(wi===3){finish();return}$("rewardIcon").textContent=worlds[wi].emoji;$("rewardTitle").textContent="يا سلام يا "+name+"!";$("rewardText").textContent="أنهيت "+worlds[wi].name+" وهزمت حارس العالم! البوابة التالية تنتظرك."; $("rStars").textContent=stars;$("rGems").textContent=gems;show("reward");confetti();fanfare()}else render()};
+$("continue").onclick=()=>{wi++;qi=0;$("racer").style.left="8%";show("play");render();tone(700)};
+function finish(){show("finish");$("finalTitle").textContent="المجرة اتنقذت يا "+name+"!";$("finalText").textContent="هزمت الروبوت زيزو وأصبحت بطل البرمجة! نتيجتك "+score+" من 16. افتخر بنفسك واستمر في الاكتشاف."; $("fStars").textContent=stars;$("fGems").textContent=gems;confetti();fanfare();$("bar").style.width="100%"}
+$("again").onclick=()=>{show("welcome");$("name").value="";$("racer").style.left="8%";$("flame").classList.remove("on")};
+</script></body></html>
